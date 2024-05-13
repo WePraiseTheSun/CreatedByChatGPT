@@ -1,5 +1,7 @@
+/*
 c# winform, if it is drag and drop component just assume the commponent is dragged and dropped on the form, there is no need to provide the common settings such as location size tabindex ..etc, function need to be re-usable in design
 I need to create a menu that maps to filesystem with folders subfolders files and files under subfolders
+*/
 
 // Create a reusable and dynamically updating menu that maps to the filesystem including all folders and files
 
