@@ -1,6 +1,7 @@
 import network
 import time
 import usocket
+import uselect
 
 class WiFiManager:
     def __init__(self, ssid, password):
@@ -35,10 +36,17 @@ class HTTPClient:
         s.connect(addr)
         s.send(bytes('GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n' % (path, host), 'utf8'))
 
+        poller = uselect.poll()
+        poller.register(s, uselect.POLLIN)
+        
         while True:
-            data = s.recv(100)
-            if data:
-                print(str(data, 'utf8'), end='')
+            events = poller.poll(1000)  # Wait for 1 second
+            if events:
+                data = s.recv(100)
+                if data:
+                    print(str(data, 'utf8'), end='')
+                else:
+                    break
             else:
                 break
         s.close()
@@ -56,13 +64,26 @@ class HTTPClient:
         s.connect(addr)
         s.send(bytes('POST /%s HTTP/1.1\r\nHost: %s\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s' % (path, host, len(payload), payload), 'utf8'))
 
+        poller = uselect.poll()
+        poller.register(s, uselect.POLLIN)
+        
         while True:
-            data = s.recv(100)
-            if data:
-                print(str(data, 'utf8'), end='')
+            events = poller.poll(1000)  # Wait for 1 second
+            if events:
+                data = s.recv(100)
+                if data:
+                    print(str(data, 'utf8'), end='')
+                else:
+                    break
             else:
                 break
         s.close()
+
+def countdown(seconds):
+    while seconds:
+        print(f"Next request in {seconds} seconds", end='\r')
+        time.sleep(1)
+        seconds -= 1
 
 # Usage Example
 ssid = 'xxx'
@@ -71,6 +92,9 @@ wifi = WiFiManager(ssid, password)
 wifi.connect()
 
 http_client = HTTPClient()
-http_client.get('http://www.example.com')
-http_client.post('http://www.example.com/post', 'key1=value1&key2=value2')
+
+# Infinite loop to make GET requests every 10 seconds
+while True:
+    http_client.get('https://www.example.com')
+    countdown(10)
 
