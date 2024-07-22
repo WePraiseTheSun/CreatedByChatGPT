@@ -1,0 +1,27 @@
+   var divElement = document.querySelector("div._4KjPzfFqnPyBgIgiXkX.WUu09DCcg0kLBfHD9jrH");
+
+    // Check if the div element exists before trying to remove it
+    if (divElement) {
+        console.log("Div element found:", divElement);
+
+        // Remove the div element from the DOM
+        divElement.remove();
+        console.log("Div element removed successfully");
+    } else {
+        console.log("Div element not found");
+    }
+
+
+    // Select the body element
+    var bodyElement = document.body;
+
+    // Check if the body element has the specific class
+    if (bodyElement.classList.contains("C_Eo4beR53oeUKegLa_b")) {
+        console.log("Class 'C_Eo4beR53oeUKegLa_b' found on body element");
+
+        // Remove the class from the body element
+        bodyElement.classList.remove("C_Eo4beR53oeUKegLa_b");
+        console.log("Class 'C_Eo4beR53oeUKegLa_b' removed from body element");
+    } else {
+        console.log("Class 'C_Eo4beR53oeUKegLa_b' not found on body element");
+    }
